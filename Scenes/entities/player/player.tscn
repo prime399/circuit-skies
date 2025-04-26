@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://bnqwauksekvb8"]
+[gd_scene load_steps=37 format=3 uid="uid://bnqwauksekvb8"]
 
 [ext_resource type="Script" uid="uid://bi5ffssuphlpq" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://br7ws78fcwvam" path="res://Assets/robot2/robo2masked/robo2jump-Sheet[48height32wide].png" id="2_yl34j"]
 [ext_resource type="Texture2D" uid="uid://ddo627domf8qh" path="res://Assets/robot2/robo2masked/robo2run-Sheet[32height32wide].png" id="3_6b3hu"]
+[ext_resource type="Texture2D" uid="uid://dd6m3qspphdrh" path="res://Assets/robot2/robo2masked/robot2dash-Sheet[32height32wide].png" id="4_7yyei"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6b3hu"]
 atlas = ExtResource("2_yl34j")
@@ -158,6 +159,63 @@ radius = 8.0
 
 [sub_resource type="Gradient" id="Gradient_6b3hu"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3rqm"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j835y"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwd6f"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pos3m"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_82wg1"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu3il"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kr2i"]
+atlas = ExtResource("4_7yyei")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8pk7g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3rqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j835y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwd6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pos3m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_82wg1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pu3il")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8kr2i")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 5.0
+}]
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 20
 collision_layer = 2
@@ -168,7 +226,6 @@ zoom = Vector2(3.5, 3.5)
 position_smoothing_enabled = true
 
 [node name="playerIdle" type="AnimatedSprite2D" parent="."]
-visible = false
 z_index = 20
 position = Vector2(0, -9)
 scale = Vector2(0.5625, 0.714844)
@@ -177,12 +234,10 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="collisionShapeIdle" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_fkybt")
 
 [node name="playerRun" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(0, -2)
 scale = Vector2(0.65625, 0.710938)
 sprite_frames = SubResource("SpriteFrames_xqqc7")
@@ -190,19 +245,16 @@ animation = &"running"
 autoplay = "running"
 
 [node name="collisionShapeRun" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_6b3hu")
 
 [node name="playerJump" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(5.96046e-08, -7)
-scale = Vector2(0.640625, 0.731771)
+position = Vector2(1.19209e-07, -7)
+scale = Vector2(0.570313, 0.636719)
 sprite_frames = SubResource("SpriteFrames_l3rqm")
 animation = &"jump"
 frame_progress = 0.567134
 
-[node name="CollisionShapeJump" type="CollisionShape2D" parent="."]
-visible = false
+[node name="collisionShapeJump" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_7yyei")
 
 [node name="LandingDust" type="CPUParticles2D" parent="."]
@@ -216,3 +268,13 @@ initial_velocity_min = 56.52
 initial_velocity_max = 100.0
 color = Color(0.827451, 0.827451, 0.827451, 1)
 color_ramp = SubResource("Gradient_6b3hu")
+
+[node name="playerDash" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -2)
+scale = Vector2(0.609375, 0.734375)
+sprite_frames = SubResource("SpriteFrames_8pk7g")
+animation = &"dash"
+frame_progress = 0.0549482
+
+[node name="collisionShapeDash" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7yyei")

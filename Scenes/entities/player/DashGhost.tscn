@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlxe328aa6h6w"]
+
+[ext_resource type="Texture2D" uid="uid://dd6m3qspphdrh" path="res://Assets/robot2/robo2masked/robot2dash-Sheet[32height32wide].png" id="1_hel6i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hel6i"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_io3ww"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpn7h"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3oer3"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vb1ul"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqddr"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v1rww"]
+atlas = ExtResource("1_hel6i")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r7w1j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hel6i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_io3ww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpn7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3oer3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vb1ul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqddr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v1rww")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="DashGhost" type="Node2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.5)
+position = Vector2(-2, -2)
+scale = Vector2(0.609375, 0.609375)
+sprite_frames = SubResource("SpriteFrames_r7w1j")
+autoplay = "default"
+frame_progress = 0.581668
