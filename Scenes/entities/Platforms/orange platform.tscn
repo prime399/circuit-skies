@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://lc3jbp0gxmdp"]
+
+[ext_resource type="Texture2D" uid="uid://cnn3t4y051jo1" path="res://Assets/Tileset/platforms.png" id="1_nk3px"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2l6iq"]
+size = Vector2(29, 8)
+
+[node name="green platform" type="AnimatableBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_2l6iq")
+one_way_collision = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_nk3px")
+region_enabled = true
+region_rect = Rect2(15.8327, 17.0224, 32.1836, 8.11163)

@@ -1,0 +1,15 @@
+[gd_scene load_steps=0 format=3 uid="uid://cn0epkeovxvut"]
+
+[node name="ActTemplate" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="."]
+
+[node name="Checkpoints" type="Node2D" parent="."]
+
+[node name="ExitPoint" type="Node2D" parent="."]
