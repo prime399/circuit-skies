@@ -50,13 +50,17 @@ var boost = 100
 func _ready():
 	await get_tree().process_frame  # wait 1 frame for all children to load
 
-	var current_level = get_node("../CurrentLevel")  # step 1: assign
+	var current_level = get_parent()  # step 1: assign (Get the direct parent)
 	if current_level:                                # step 2: check
-		spawn_point = current_level.find_node("PlayerSpawnPoint", true, false)  # step 3: assign
+		spawn_point = current_level.find_child("PlayerSpawnPoint", true, false)  # step 3: assign (Use find_child in Godot 4)
 		if spawn_point == null:
-			push_error("PlayerSpawnPoint not found inside CurrentLevel!")
+			# Check if the parent is actually named CurrentLevel for clarity
+			if current_level.name == "CurrentLevel":
+				push_error("PlayerSpawnPoint not found inside CurrentLevel!")
+			else:
+				push_error("Player's parent is not named 'CurrentLevel'. Found: " + current_level.name)
 	else:
-		push_error("CurrentLevel node not found!")
+		push_error("Player node does not have a parent!") # Should not happen in normal scene setup
 
 	hp = max_hp
 	boost = max_boost
@@ -178,10 +182,14 @@ func die():
 
 	await get_tree().create_timer(1.0).timeout
 
+	# print("DEBUG: Player died at position: ", global_position) # Debug print removed
 	if spawn_point:
+		# print("DEBUG: Attempting to respawn at: ", spawn_point.global_position) # Debug print removed
 		global_position = spawn_point.global_position
+		# print("DEBUG: Player position AFTER respawn attempt: ", global_position) # Debug print removed
 	else:
-		print("Warning: spawn_point missing!")
+		# print("DEBUG: Warning: spawn_point missing in die()!") # Debug print removed
+		push_error("Spawn point reference missing when trying to respawn!") # Keep error for clarity
 
 	hp = max_hp
 	GameManager.update_hp(hp)
