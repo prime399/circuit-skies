@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://bnqwauksekvb8"]
+[gd_scene load_steps=55 format=3 uid="uid://bnqwauksekvb8"]
 
 [ext_resource type="Script" uid="uid://bi5ffssuphlpq" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://br7ws78fcwvam" path="res://Assets/robot2/robo2masked/robo2jump-Sheet[48height32wide].png" id="2_yl34j"]
@@ -330,6 +330,8 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_6b3hu"]
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 20
 collision_layer = 2
@@ -396,3 +398,15 @@ sprite_frames = SubResource("SpriteFrames_7oxg6")
 position = Vector2(1, 0)
 scale = Vector2(0.578125, 0.65625)
 sprite_frames = SubResource("SpriteFrames_fkit1")
+
+[node name="LandingDust" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 22
+lifetime = 0.35
+one_shot = true
+spread = 180.0
+gravity = Vector2(0, 400)
+initial_velocity_min = 56.52
+initial_velocity_max = 100.0
+color = Color(0.827451, 0.827451, 0.827451, 1)
+color_ramp = SubResource("Gradient_6b3hu")

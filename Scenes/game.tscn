@@ -155,6 +155,7 @@ sprite_frames = SubResource("SpriteFrames_exi56")
 animation = &"coin"
 
 [node name="Label" type="Label" parent="CanvasLayer/Panel"]
+visible = false
 layout_mode = 1
 offset_left = 11.0
 offset_top = 12.0
@@ -172,7 +173,6 @@ offset_top = 58.0
 offset_right = 274.0
 offset_bottom = 104.0
 theme_override_styles/fill = SubResource("StyleBoxTexture_h4fw4")
-value = 15.0
 
 [node name="HPBar" type="ProgressBar" parent="CanvasLayer/Panel"]
 layout_mode = 0
@@ -181,6 +181,5 @@ offset_top = 107.0
 offset_right = 274.0
 offset_bottom = 156.0
 theme_override_styles/fill = SubResource("StyleBoxTexture_v158k")
-value = 15.0
 
 [node name="CurrentLevel" type="Node2D" parent="."]

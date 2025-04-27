@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bao15eixp6stq"]
+[gd_scene load_steps=21 format=3 uid="uid://bao15eixp6stq"]
 
 [ext_resource type="Script" uid="uid://sipcbxs28rty" path="res://Scripts/enemy_slime_green.gd" id="1_3681e"]
 [ext_resource type="Texture2D" uid="uid://br8w7ip6ma37r" path="res://Assets/previous project assest/slime_green.png" id="1_urtny"]
@@ -130,6 +130,8 @@ size = Vector2(10, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_3681e"]
 radius = 37.0135
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_6x76d"]
+
 [node name="EnemySlime" type="Node2D"]
 script = ExtResource("1_3681e")
 
@@ -157,6 +159,13 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
 shape = SubResource("CircleShape2D_3681e")
+
+[node name="BodyArea" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyArea"]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_6x76d")
 
 [connection signal="animation_finished" from="CharacterBody2D/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
