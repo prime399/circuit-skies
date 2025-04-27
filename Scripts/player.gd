@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
 @export var speed := 70
-@export var dash_speed := 250
+@export var dash_speed := 300
 @export var gravity := 400
 @export var jump_force := -230
 @export var dash_duration := 0.3
-@export var dash_cooldown := 0.5
+@export var dash_cooldown := 0.3
 @export var max_hp := 100
 @export var hp_regen_rate := 5
 @export var knockback_horizontal := 150

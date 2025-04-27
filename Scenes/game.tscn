@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://c843in5dhxj46"]
+[gd_scene load_steps=33 format=3 uid="uid://c843in5dhxj46"]
 
 [ext_resource type="Script" uid="uid://j7354rdqer3j" path="res://Scripts/game.gd" id="1_wrm1d"]
 [ext_resource type="Script" uid="uid://bii57eal6vq5j" path="res://Scripts/game_manager.gd" id="2_qxrlw"]
@@ -6,6 +6,8 @@
 [ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="4_wowpa"]
 [ext_resource type="Texture2D" uid="uid://cnaelck51eoy6" path="res://Assets/sprites/coin.png" id="5_i6g32"]
 [ext_resource type="Texture2D" uid="uid://b04d75xtmg2tj" path="res://Assets/others/health bar asset.png" id="6_i6g32"]
+[ext_resource type="Texture2D" uid="uid://3kwqqi58f833" path="res://Assets/Poster/poster for main menu.png" id="7_1l0tm"]
+[ext_resource type="Script" uid="uid://dyv2hpth8i6j6" path="res://Scripts/main_menu.gd" id="7_v158k"]
 
 [sub_resource type="Theme" id="Theme_1l0tm"]
 
@@ -115,6 +117,29 @@ region_rect = Rect2(57.0904, 149.815, 31.6245, 3.60793)
 texture = ExtResource("6_i6g32")
 region_rect = Rect2(57.0788, 132.329, 32.1616, 6.21332)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ldgsr"]
+texture = ExtResource("7_1l0tm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1l0tm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v158k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4fw4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldgsr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6g32"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wrm1d")
 
@@ -184,3 +209,54 @@ offset_bottom = 156.0
 theme_override_styles/fill = SubResource("StyleBoxTexture_v158k")
 
 [node name="CurrentLevel" type="Node2D" parent="."]
+
+[node name="MainMenu" type="CanvasLayer" parent="."]
+script = ExtResource("7_v158k")
+
+[node name="Panel" type="Panel" parent="MainMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ldgsr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/Panel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -44.0
+offset_right = 314.0
+offset_bottom = 44.0
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="LeaderBoard" type="Button" parent="MainMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_wowpa")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/focus = SubResource("StyleBoxFlat_1l0tm")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_v158k")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_h4fw4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ldgsr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_i6g32")
+text = "Leader Board
+"
+
+[node name="StartButton" type="Button" parent="MainMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_wowpa")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/focus = SubResource("StyleBoxFlat_1l0tm")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_v158k")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_h4fw4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ldgsr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_i6g32")
+text = "Start Game"
