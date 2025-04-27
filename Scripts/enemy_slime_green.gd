@@ -15,12 +15,24 @@ var player_in_body_area = false  # <<< NEW: track if player still nearby
 @onready var anim_sprite: AnimatedSprite2D = $CharacterBody2D/AnimatedSprite2D
 @onready var player_detector: Area2D = $PlayerDetector
 @onready var body_area: Area2D = $BodyArea
+@onready var slime_sound_player = AudioStreamPlayer.new()
+@onready var slime_sound_timer = Timer.new()
 
 func _ready():
 	anim_sprite.play("slimeSleep")
 	player_detector.body_entered.connect(_on_player_detector_body_entered)
 	body_area.body_entered.connect(_on_body_area_entered)
 	body_area.body_exited.connect(_on_body_area_exited)
+
+	# Setup sound player
+	add_child(slime_sound_player)
+	slime_sound_player.stream = load("res://Assets/previous project assest/sounds/green_slime.mp3")
+
+	# Setup sound timer
+	add_child(slime_sound_timer)
+	slime_sound_timer.wait_time = 2.0 # 2 second delay
+	slime_sound_timer.one_shot = false # Make it loop
+	slime_sound_timer.timeout.connect(_on_slime_sound_timer_timeout)
 
 func _process(delta: float) -> void:
 	if is_awake:
@@ -62,7 +74,14 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if player_detected and anim_sprite.animation == "slimeWakeUp":
 		is_awake = true
 		anim_sprite.play("slimeWalk")
+		slime_sound_timer.start() # Start the sound loop when awake
+		_on_slime_sound_timer_timeout() # Play the first sound immediately
 	elif attacking and anim_sprite.animation == "slimeAttack":
 		# After attack animation ends, return to walk if player escaped
 		if not player_in_body_area:
 			anim_sprite.play("slimeWalk")
+
+func _on_slime_sound_timer_timeout():
+	# This function is called every 2 seconds by the timer
+	if is_awake: # Double check if still awake before playing
+		slime_sound_player.play()

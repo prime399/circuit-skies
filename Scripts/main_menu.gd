@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var start_button = $Panel/VBoxContainer/StartButton
 @onready var current_level_node = get_node("../CurrentLevel") # Reference to the level node
 @onready var hud_node = get_node("../CanvasLayer") # Reference to the HUD CanvasLayer
+@onready var tap_sound_player = AudioStreamPlayer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,6 +27,10 @@ func _ready() -> void:
 	# if current_level_node: current_level_node.hide()
 	# if hud_node: hud_node.hide()
 
+	# Add sound player and load sound
+	add_child(tap_sound_player)
+	tap_sound_player.stream = load("res://Assets/previous project assest/sounds/tap.wav")
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta: float) -> void:
@@ -34,6 +39,7 @@ func _ready() -> void:
 
 # Function called when the StartButton is pressed
 func _on_start_button_pressed():
+	tap_sound_player.play() # Play tap sound
 	print("Start button pressed. Showing game level.")
 	# Hide the main menu itself
 	hide()

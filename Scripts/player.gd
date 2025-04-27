@@ -15,8 +15,8 @@ extends CharacterBody2D
 
 @export var max_boost := 100
 @export var boost_regen_rate := 10
-@export var dash_boost_cost := 40
 
+@export var dash_boost_cost := 40
 @onready var anim_idle = $playerIdle
 @onready var anim_run = $playerRun
 @onready var anim_jump = $playerJump
@@ -30,6 +30,10 @@ extends CharacterBody2D
 @onready var camera = $Camera2D
 @onready var dust = $LandingDust
 @onready var DashGhost = preload("res://Scenes/entities/player/DashGhost.tscn")
+
+@onready var jump_sound_player = AudioStreamPlayer.new()
+@onready var hurt_sound_player = AudioStreamPlayer.new()
+@onready var dash_sound_player = AudioStreamPlayer.new()
 
 var spawn_point: Node2D = null
 
@@ -68,6 +72,14 @@ func _ready():
 	GameManager.update_boost(boost)
 	switch_to_idle()
 	
+	# Add sound players as children and load sounds
+	add_child(jump_sound_player)
+	jump_sound_player.stream = load("res://Assets/previous project assest/sounds/jump.wav")
+	add_child(hurt_sound_player)
+	hurt_sound_player.stream = load("res://Assets/previous project assest/sounds/hurt.wav")
+	add_child(dash_sound_player)
+	dash_sound_player.stream = load("res://Assets/previous project assest/sounds/dash.mp3")
+	
 
 	
 	
@@ -100,6 +112,7 @@ func handle_movement(delta):
 	# Animation switching
 	if is_on_floor() and not is_dashing:
 		if Input.is_action_just_pressed("ui_accept"):
+			jump_sound_player.play() # Play jump sound immediately
 			velocity.y = jump_force
 			switch_to_jump()
 		elif input_dir == 0:
@@ -143,6 +156,7 @@ func handle_regen(delta):
 # ========================
 
 func take_damage(amount, knockback_dir):
+	hurt_sound_player.play() # Play hurt sound
 	if is_invincible:
 		return
 
@@ -205,6 +219,7 @@ func die():
 # ========================
 
 func start_dash():
+	dash_sound_player.play() # Play dash sound immediately
 	is_dashing = true
 	can_dash = false
 	boost -= dash_boost_cost
