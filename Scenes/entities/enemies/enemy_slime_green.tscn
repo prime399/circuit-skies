@@ -1,7 +1,23 @@
-[gd_scene load_steps=16 format=3 uid="uid://bao15eixp6stq"]
+[gd_scene load_steps=20 format=3 uid="uid://bao15eixp6stq"]
 
 [ext_resource type="Script" uid="uid://sipcbxs28rty" path="res://Scripts/enemy_slime_green.gd" id="1_3681e"]
 [ext_resource type="Texture2D" uid="uid://br8w7ip6ma37r" path="res://Assets/previous project assest/slime_green.png" id="1_urtny"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxm8k"]
+atlas = ExtResource("1_urtny")
+region = Rect2(0, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jknsi"]
+atlas = ExtResource("1_urtny")
+region = Rect2(24, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mw8s5"]
+atlas = ExtResource("1_urtny")
+region = Rect2(48, 48, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkt84"]
+atlas = ExtResource("1_urtny")
+region = Rect2(72, 48, 24, 24)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yugvk"]
 atlas = ExtResource("1_urtny")
@@ -45,6 +61,23 @@ region = Rect2(72, 24, 24, 24)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yugvk"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxm8k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jknsi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mw8s5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkt84")
+}],
+"loop": true,
+"name": &"slimeAttack",
+"speed": 7.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yugvk")
@@ -111,8 +144,9 @@ target_position = Vector2(-9, -1)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_yugvk")
-animation = &"slimeSleep"
+animation = &"slimeAttack"
 autoplay = "slimeSleep"
+frame_progress = 0.49687
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(0, -2)

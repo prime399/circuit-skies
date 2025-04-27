@@ -1,10 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://c843in5dhxj46"]
+[gd_scene load_steps=25 format=3 uid="uid://c843in5dhxj46"]
 
 [ext_resource type="Script" uid="uid://j7354rdqer3j" path="res://Scripts/game.gd" id="1_wrm1d"]
 [ext_resource type="Script" uid="uid://bii57eal6vq5j" path="res://Scripts/game_manager.gd" id="2_qxrlw"]
 [ext_resource type="Script" uid="uid://cjhd425dxncg" path="res://Scripts/hud.gd" id="3_wrm1d"]
 [ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="4_wowpa"]
 [ext_resource type="Texture2D" uid="uid://cnaelck51eoy6" path="res://Assets/sprites/coin.png" id="5_i6g32"]
+[ext_resource type="Texture2D" uid="uid://b04d75xtmg2tj" path="res://Assets/others/health bar asset.png" id="6_i6g32"]
 
 [sub_resource type="Theme" id="Theme_1l0tm"]
 
@@ -106,6 +107,14 @@ animations = [{
 
 [sub_resource type="Theme" id="Theme_wowpa"]
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4fw4"]
+texture = ExtResource("6_i6g32")
+region_rect = Rect2(57.0904, 150.845, 31.6245, 1.09779)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
+texture = ExtResource("6_i6g32")
+region_rect = Rect2(57.0788, 132.329, 32.1616, 6.21332)
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wrm1d")
 
@@ -119,17 +128,17 @@ script = ExtResource("2_qxrlw")
 offset_left = 24.0
 offset_top = 19.0
 offset_right = 302.0
-offset_bottom = 133.0
+offset_bottom = 182.0
 theme = SubResource("Theme_1l0tm")
 script = ExtResource("3_wrm1d")
 
 [node name="CoinLabel" type="Label" parent="CanvasLayer/Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.507194
-anchor_top = 0.0964912
-anchor_right = 0.601812
-anchor_bottom = 0.176738
+anchor_left = 0.0395683
+anchor_top = 0.0858896
+anchor_right = 0.134186
+anchor_bottom = 0.166136
 offset_left = -4.0
 offset_right = 86.6962
 offset_bottom = 32.8519
@@ -155,5 +164,23 @@ theme = SubResource("Theme_wowpa")
 theme_override_fonts/font = ExtResource("4_wowpa")
 theme_override_font_sizes/font_size = 25
 text = "Score:"
+
+[node name="BoostBar" type="ProgressBar" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 58.0
+offset_right = 274.0
+offset_bottom = 104.0
+theme_override_styles/fill = SubResource("StyleBoxTexture_h4fw4")
+value = 15.0
+
+[node name="HPBar" type="ProgressBar" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 107.0
+offset_right = 274.0
+offset_bottom = 156.0
+theme_override_styles/fill = SubResource("StyleBoxTexture_v158k")
+value = 15.0
 
 [node name="CurrentLevel" type="Node2D" parent="."]
