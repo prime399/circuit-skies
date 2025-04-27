@@ -21,8 +21,12 @@ func handle_movement(delta):
 		direction = -1
 	elif ray_cast_left.is_colliding():
 		direction = 1
-		
+
+	# FLIP the sprite based on direction
+	anim_sprite.flip_h = (direction == -1)
+
 	position.x += direction * SPEED * delta
+
 
 
 
