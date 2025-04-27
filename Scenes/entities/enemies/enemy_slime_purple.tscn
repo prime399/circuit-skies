@@ -150,7 +150,7 @@ scale = Vector2(1.29167, 1.45833)
 sprite_frames = SubResource("SpriteFrames_yugvk")
 animation = &"slimeWalk"
 autoplay = "slimeSleep"
-frame_progress = 0.609345
+frame_progress = 0.100415
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(1, -4.5)

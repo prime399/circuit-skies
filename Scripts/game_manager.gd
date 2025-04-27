@@ -10,9 +10,9 @@ var current_level_path: String = "" # Store the path of the currently loaded lev
 signal hp_changed(new_hp)
 signal boost_changed(new_boost)
 
-func add_point():
-	score += 1
-	print(score)
+func add_score(value: int):
+	score += value
+	print("Score: ", score) # Updated print
 
 func update_hp(new_hp):
 	emit_signal("hp_changed", new_hp)
