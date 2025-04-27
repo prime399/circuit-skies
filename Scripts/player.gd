@@ -1,18 +1,22 @@
 extends CharacterBody2D
 
-@export var speed := 100
-@export var dash_speed := 400
-@export var gravity := 800
-@export var jump_force := -350
+@export var speed := 50
+@export var dash_speed := 250
+@export var gravity := 400
+@export var jump_force := -230
 @export var dash_duration := 0.2
 @export var dash_cooldown := 0.5
 @export var max_hp := 100
 @export var hp_regen_rate := 5
-@export var knockback_horizontal := 250
-@export var knockback_vertical := -300
+@export var knockback_horizontal := 150
+@export var knockback_vertical := -250
 @export var hurt_recovery_time := 0.4
-@export var invincible_time := 1.0  # <<< NEW
-@export var blink_speed := 0.1      # <<< NEW (flicker every 0.1s)
+@export var invincible_time := 1.0
+@export var blink_speed := 0.1      # (flicker every 0.1s)
+
+@export var max_boost := 100        # <<< NEW Boost System
+@export var boost_regen_rate := 20  # <<< NEW Boost recharge per second
+@export var dash_boost_cost := 40   # <<< NEW Boost cost per dash
 
 # Node references
 @onready var anim_idle = $playerIdle
@@ -37,21 +41,38 @@ var previous_velocity_y = 0.0
 var is_dashing = false
 var can_dash = true
 var is_hurt = false
-var is_invincible = false  # <<< NEW
+var is_invincible = false
 
 var hp = 100
+var boost = 100 # <<< NEW
 var respawn_position = Vector2()
 
 func _ready():
 	respawn_position = global_position
 	hp = max_hp
+	boost = max_boost # <<< NEW
+	GameManager.update_hp(hp)
+	GameManager.update_boost(boost) # <<< NEW
 	switch_to_idle()
 
 func _physics_process(delta):
+	apply_gravity(delta)
+
 	if not is_hurt:
 		handle_movement(delta)
+	else:
+		velocity.x = lerp(velocity.x, 0.0, 0.1)  # Slowly reduce knockback x velocity
+
+	move_and_slide()
 	handle_landing()
 	handle_regen(delta)
+
+func apply_gravity(delta):
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		velocity.y = 0
+
 
 func handle_movement(delta):
 	if not is_on_floor() and not is_dashing:
@@ -86,7 +107,7 @@ func handle_movement(delta):
 		switch_to_jump()
 
 	# Dash
-	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and input_dir != 0:
+	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and input_dir != 0 and boost >= dash_boost_cost: # <<< NEW Boost Check
 		start_dash()
 
 	move_and_slide()
@@ -110,6 +131,11 @@ func handle_regen(delta):
 		hp += hp_regen_rate * delta
 		hp = clamp(hp, 0, max_hp)
 		GameManager.update_hp(hp)
+
+	if boost < max_boost: # <<< NEW Boost Regen
+		boost += boost_regen_rate * delta
+		boost = clamp(boost, 0, max_boost)
+		GameManager.update_boost(boost)
 
 # ========================
 # DAMAGE + INVINCIBILITY
@@ -138,8 +164,7 @@ func take_damage(amount, knockback_dir):
 func start_invincibility():
 	is_invincible = true
 	await get_tree().create_timer(hurt_recovery_time).timeout
-	is_hurt = false
-	switch_to_idle()
+	# is_hurt reset and switch_to_idle moved to _on_player_damage_animation_finished
 
 	# Blinking effect
 	var elapsed = 0.0
@@ -166,6 +191,8 @@ func die():
 	global_position = respawn_position
 	hp = max_hp
 	GameManager.update_hp(hp)
+	boost = max_boost # <<< NEW Reset Boost
+	GameManager.update_boost(boost) # <<< NEW Update Boost UI
 	is_hurt = false
 	is_invincible = false
 	switch_to_idle()
@@ -177,6 +204,8 @@ func die():
 func start_dash():
 	is_dashing = true
 	can_dash = false
+	boost -= dash_boost_cost # <<< NEW Consume Boost
+	GameManager.update_boost(boost) # <<< NEW Update Boost UI
 	switch_to_dash()
 	camera.zoom = Vector2(3.7, 3.5)
 
@@ -295,3 +324,10 @@ func switch_to_damage():
 	anim_jump.visible = false
 	anim_dash.visible = false
 	anim_died.visible = false
+
+# <<< NEW Function to handle end of damage animation
+func _on_player_damage_animation_finished():
+	is_hurt = false
+	# Don't switch if already invincible (blinking)
+	if not is_invincible:
+		switch_to_idle()
