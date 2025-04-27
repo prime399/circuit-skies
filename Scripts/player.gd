@@ -1,29 +1,26 @@
 extends CharacterBody2D
 
-@export var speed := 50
+@export var speed := 70
 @export var dash_speed := 250
 @export var gravity := 400
 @export var jump_force := -230
-@export var dash_duration := 0.2
+@export var dash_duration := 0.3
 @export var dash_cooldown := 0.5
 @export var max_hp := 100
 @export var hp_regen_rate := 5
 @export var knockback_horizontal := 150
 @export var knockback_vertical := -250
-@export var hurt_recovery_time := 0.4
 @export var invincible_time := 1.0
-@export var blink_speed := 0.1      # (flicker every 0.1s)
+@export var blink_speed := 0.1
 
-@export var max_boost := 100        # <<< NEW Boost System
-@export var boost_regen_rate := 20  # <<< NEW Boost recharge per second
-@export var dash_boost_cost := 40   # <<< NEW Boost cost per dash
+@export var max_boost := 100
+@export var boost_regen_rate := 10
+@export var dash_boost_cost := 40
 
-# Node references
 @onready var anim_idle = $playerIdle
 @onready var anim_run = $playerRun
 @onready var anim_jump = $playerJump
 @onready var anim_dash = $playerDash
-@onready var anim_damage = $playerDamage
 @onready var anim_died = $playerDied
 
 @onready var collider_idle = $collisionShapeIdle
@@ -34,50 +31,53 @@ extends CharacterBody2D
 @onready var dust = $LandingDust
 @onready var DashGhost = preload("res://Scenes/entities/player/DashGhost.tscn")
 
+var spawn_point: Node2D = null
+
+
 var input_dir = 0.0
 var was_in_air = false
 var previous_velocity_y = 0.0
 
 var is_dashing = false
 var can_dash = true
-var is_hurt = false
 var is_invincible = false
 
 var hp = 100
-var boost = 100 # <<< NEW
-var respawn_position = Vector2()
+var boost = 100
+
+
 
 func _ready():
-	respawn_position = global_position
-	hp = max_hp
-	boost = max_boost # <<< NEW
-	GameManager.update_hp(hp)
-	GameManager.update_boost(boost) # <<< NEW
-	switch_to_idle()
+	await get_tree().process_frame  # wait 1 frame for all children to load
 
-func _physics_process(delta):
-	apply_gravity(delta)
-
-	if not is_hurt:
-		handle_movement(delta)
+	var current_level = get_node("../CurrentLevel")  # step 1: assign
+	if current_level:                                # step 2: check
+		spawn_point = current_level.find_node("PlayerSpawnPoint", true, false)  # step 3: assign
+		if spawn_point == null:
+			push_error("PlayerSpawnPoint not found inside CurrentLevel!")
 	else:
-		velocity.x = lerp(velocity.x, 0.0, 0.1)  # Slowly reduce knockback x velocity
+		push_error("CurrentLevel node not found!")
 
+	hp = max_hp
+	boost = max_boost
+	GameManager.update_hp(hp)
+	GameManager.update_boost(boost)
+	switch_to_idle()
+	
+
+	
+	
+func _physics_process(delta):
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	handle_movement(delta)
 	move_and_slide()
+
 	handle_landing()
 	handle_regen(delta)
 
-func apply_gravity(delta):
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	else:
-		velocity.y = 0
-
-
 func handle_movement(delta):
-	if not is_on_floor() and not is_dashing:
-		velocity.y += gravity * delta
-
 	input_dir = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 
 	if is_dashing:
@@ -88,13 +88,12 @@ func handle_movement(delta):
 	# Flip all sprites
 	if input_dir != 0:
 		var dir = sign(input_dir)
-		$playerIdle.scale.x = abs($playerIdle.scale.x) * dir
-		$playerRun.scale.x = abs($playerRun.scale.x) * dir
-		$playerJump.scale.x = abs($playerJump.scale.x) * dir
-		$playerDash.scale.x = abs($playerDash.scale.x) * dir
-		$playerDamage.scale.x = abs($playerDamage.scale.x) * dir
+		anim_idle.scale.x = abs(anim_idle.scale.x) * dir
+		anim_run.scale.x = abs(anim_run.scale.x) * dir
+		anim_jump.scale.x = abs(anim_jump.scale.x) * dir
+		anim_dash.scale.x = abs(anim_dash.scale.x) * dir
 
-	# Jump
+	# Animation switching
 	if is_on_floor() and not is_dashing:
 		if Input.is_action_just_pressed("ui_accept"):
 			velocity.y = jump_force
@@ -107,10 +106,8 @@ func handle_movement(delta):
 		switch_to_jump()
 
 	# Dash
-	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and input_dir != 0 and boost >= dash_boost_cost: # <<< NEW Boost Check
+	if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and input_dir != 0 and boost >= dash_boost_cost:
 		start_dash()
-
-	move_and_slide()
 
 func handle_landing():
 	var touching_ground = is_on_floor()
@@ -132,7 +129,7 @@ func handle_regen(delta):
 		hp = clamp(hp, 0, max_hp)
 		GameManager.update_hp(hp)
 
-	if boost < max_boost: # <<< NEW Boost Regen
+	if boost < max_boost:
 		boost += boost_regen_rate * delta
 		boost = clamp(boost, 0, max_boost)
 		GameManager.update_boost(boost)
@@ -142,19 +139,15 @@ func handle_regen(delta):
 # ========================
 
 func take_damage(amount, knockback_dir):
-	if is_hurt or is_invincible:
-		return  # No damage if already hurt or invincible
+	if is_invincible:
+		return
 
 	hp -= amount
 	GameManager.update_hp(hp)
 
-	switch_to_damage()
-
 	# Knockback
 	velocity.x = knockback_dir * knockback_horizontal
 	velocity.y = knockback_vertical
-
-	is_hurt = true
 
 	if hp <= 0:
 		die()
@@ -163,10 +156,6 @@ func take_damage(amount, knockback_dir):
 
 func start_invincibility():
 	is_invincible = true
-	await get_tree().create_timer(hurt_recovery_time).timeout
-	# is_hurt reset and switch_to_idle moved to _on_player_damage_animation_finished
-
-	# Blinking effect
 	var elapsed = 0.0
 	while elapsed < invincible_time:
 		visible = false
@@ -178,6 +167,7 @@ func start_invincibility():
 	is_invincible = false
 	visible = true
 
+
 func die():
 	anim_died.visible = true
 	anim_died.play("death")
@@ -185,27 +175,32 @@ func die():
 	anim_run.visible = false
 	anim_jump.visible = false
 	anim_dash.visible = false
-	anim_damage.visible = false
 
 	await get_tree().create_timer(1.0).timeout
-	global_position = respawn_position
+
+	if spawn_point:
+		global_position = spawn_point.global_position
+	else:
+		print("Warning: spawn_point missing!")
+
 	hp = max_hp
 	GameManager.update_hp(hp)
-	boost = max_boost # <<< NEW Reset Boost
-	GameManager.update_boost(boost) # <<< NEW Update Boost UI
-	is_hurt = false
+	boost = max_boost
+	GameManager.update_boost(boost)
 	is_invincible = false
 	switch_to_idle()
 
+
+
 # ========================
-# DASH STUFF
+# DASH
 # ========================
 
 func start_dash():
 	is_dashing = true
 	can_dash = false
-	boost -= dash_boost_cost # <<< NEW Consume Boost
-	GameManager.update_boost(boost) # <<< NEW Update Boost UI
+	boost -= dash_boost_cost
+	GameManager.update_boost(boost)
 	switch_to_dash()
 	camera.zoom = Vector2(3.7, 3.5)
 
@@ -230,7 +225,7 @@ func spawn_dash_ghost():
 	ghost.position = global_position
 	ghost.scale = scale
 	get_parent().add_child(ghost)
-	ghost.get_node("AnimatedSprite2D").flip_h = ($playerDash.scale.x < 0)
+	ghost.get_node("AnimatedSprite2D").flip_h = (anim_dash.scale.x < 0)
 	ghost.modulate = Color(0.6, 0.4, 0.8, 0.6)
 	ghost.z_index = -1
 	var tween = ghost.create_tween()
@@ -264,70 +259,42 @@ func spawn_landing_dust():
 # ========================
 
 func switch_to_idle():
-	if is_hurt:
-		return
 	anim_idle.visible = true
 	anim_idle.play("idle")
 	anim_run.visible = false
 	anim_jump.visible = false
 	anim_dash.visible = false
-	anim_damage.visible = false
 	anim_died.visible = false
 	collider_idle.disabled = false
 	collider_run.disabled = true
 	collider_dash.disabled = true
 
 func switch_to_run():
-	if is_hurt:
-		return
 	anim_run.visible = true
 	anim_run.play("running")
 	anim_idle.visible = false
 	anim_jump.visible = false
 	anim_dash.visible = false
-	anim_damage.visible = false
 	anim_died.visible = false
 	collider_run.disabled = false
 	collider_idle.disabled = true
 	collider_dash.disabled = true
 
 func switch_to_jump():
-	if is_hurt:
-		return
 	anim_jump.visible = true
 	anim_jump.play("jump")
 	anim_idle.visible = false
 	anim_run.visible = false
 	anim_dash.visible = false
-	anim_damage.visible = false
 	anim_died.visible = false
 
 func switch_to_dash():
-	if is_hurt:
-		return
 	anim_dash.visible = true
 	anim_dash.play("dash")
 	anim_idle.visible = false
 	anim_run.visible = false
 	anim_jump.visible = false
-	anim_damage.visible = false
 	anim_died.visible = false
 	collider_dash.disabled = false
 	collider_idle.disabled = true
 	collider_run.disabled = true
-
-func switch_to_damage():
-	anim_damage.visible = true
-	anim_damage.play("damage")
-	anim_idle.visible = false
-	anim_run.visible = false
-	anim_jump.visible = false
-	anim_dash.visible = false
-	anim_died.visible = false
-
-# <<< NEW Function to handle end of damage animation
-func _on_player_damage_animation_finished():
-	is_hurt = false
-	# Don't switch if already invincible (blinking)
-	if not is_invincible:
-		switch_to_idle()

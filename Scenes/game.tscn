@@ -109,7 +109,7 @@ animations = [{
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4fw4"]
 texture = ExtResource("6_i6g32")
-region_rect = Rect2(57.0904, 150.845, 31.6245, 1.09779)
+region_rect = Rect2(57.0904, 149.815, 31.6245, 3.60793)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v158k"]
 texture = ExtResource("6_i6g32")
@@ -125,6 +125,7 @@ script = ExtResource("2_qxrlw")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
+self_modulate = Color(1, 1, 1, 0.784314)
 offset_left = 24.0
 offset_top = 19.0
 offset_right = 302.0
@@ -170,8 +171,8 @@ text = "Score:"
 layout_mode = 0
 offset_left = 10.0
 offset_top = 58.0
-offset_right = 274.0
-offset_bottom = 104.0
+offset_right = 266.0
+offset_bottom = 92.0
 theme_override_styles/fill = SubResource("StyleBoxTexture_h4fw4")
 
 [node name="HPBar" type="ProgressBar" parent="CanvasLayer/Panel"]
