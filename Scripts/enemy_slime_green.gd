@@ -15,7 +15,7 @@ var player_in_body_area = false  # <<< NEW: track if player still nearby
 @onready var anim_sprite: AnimatedSprite2D = $CharacterBody2D/AnimatedSprite2D
 @onready var player_detector: Area2D = $PlayerDetector
 @onready var body_area: Area2D = $BodyArea
-@onready var slime_sound_player = AudioStreamPlayer.new()
+@onready var slime_sound_player = AudioStreamPlayer2D.new() # Use 2D player for positional audio
 @onready var slime_sound_timer = Timer.new()
 
 func _ready():
@@ -24,9 +24,11 @@ func _ready():
 	body_area.body_entered.connect(_on_body_area_entered)
 	body_area.body_exited.connect(_on_body_area_exited)
 
-	# Setup sound player
+	# Setup sound player (AudioStreamPlayer2D)
 	add_child(slime_sound_player)
 	slime_sound_player.stream = load("res://Assets/previous project assest/sounds/green_slime.mp3")
+	slime_sound_player.volume_db = -8 # Make the slime sound quieter overall
+	# Default attenuation settings will make sound quieter with distance.
 
 	# Setup sound timer
 	add_child(slime_sound_timer)

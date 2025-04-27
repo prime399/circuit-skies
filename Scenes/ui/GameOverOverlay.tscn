@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://codxirav60iql"]
+
+[ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="1_1b65y"]
+[ext_resource type="Script" uid="uid://cv66xlsg8pbi8" path="res://Scripts/GameOverOverlay.gd" id="1_mfc8l"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_mfc8l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.705882)
+
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Label" type="Label" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_1b65y")
+theme_override_font_sizes/font_size = 30
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="ColorRect/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_1b65y")
+theme_override_font_sizes/font_size = 30
+text = "Restart"

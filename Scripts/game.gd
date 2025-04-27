@@ -7,6 +7,21 @@ var player_instance = null
 #var ui_instance = null
 
 func _ready():
+	# Register this scene's path with the GameManager for restarts
+	print("[game.gd] _ready: Scene path is: '", self.scene_file_path, "'") # DEBUG
+	if self.scene_file_path and not self.scene_file_path.is_empty():
+		GameManager.register_level_path(self.scene_file_path)
+	else:
+		push_warning("[game.gd] Scene does not have a file path, cannot register for restart.") # DEBUG
+		
+	# Explicitly hide the main menu on ready (in case it persists after reload)
+	var main_menu_node = find_child("MainMenu", false, false) # Adjust "MainMenu" if node name is different
+	if main_menu_node:
+		print("[game.gd] Hiding MainMenu node found.") # DEBUG
+		main_menu_node.hide()
+	else:
+		print("[game.gd] MainMenu node not found to hide.") # DEBUG
+		
 	# Create persistent player
 	player_instance = player_scene.instantiate()
 	player_instance.add_to_group("player")
@@ -15,6 +30,9 @@ func _ready():
 	# Create UI
 	#ui_instance = ui_scene.instantiate()
 	#add_child(ui_instance)
+	
+	# Reset to Act 1 on ready (ensures fresh start after scene reload)
+	current_act = 1
 	
 	# Load first act
 	load_act(current_act)

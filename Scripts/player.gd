@@ -7,14 +7,14 @@ extends CharacterBody2D
 @export var dash_duration := 0.3
 @export var dash_cooldown := 0.3
 @export var max_hp := 100
-@export var hp_regen_rate := 5
+@export var hp_regen_rate := 1.5
 @export var knockback_horizontal := 150
 @export var knockback_vertical := -250
 @export var invincible_time := 1.0
 @export var blink_speed := 0.1
 
 @export var max_boost := 100
-@export var boost_regen_rate := 10
+@export var boost_regen_rate := 1
 
 @export var dash_boost_cost := 40
 @onready var anim_idle = $playerIdle
@@ -34,6 +34,7 @@ extends CharacterBody2D
 @onready var jump_sound_player = AudioStreamPlayer.new()
 @onready var hurt_sound_player = AudioStreamPlayer.new()
 @onready var dash_sound_player = AudioStreamPlayer.new()
+@onready var explosion_sound_player = AudioStreamPlayer.new()
 
 var spawn_point: Node2D = null
 
@@ -75,10 +76,13 @@ func _ready():
 	# Add sound players as children and load sounds
 	add_child(jump_sound_player)
 	jump_sound_player.stream = load("res://Assets/previous project assest/sounds/jump.wav")
+	jump_sound_player.volume_db = -8 # Make the jump sound quieter overall
 	add_child(hurt_sound_player)
 	hurt_sound_player.stream = load("res://Assets/previous project assest/sounds/hurt.wav")
 	add_child(dash_sound_player)
 	dash_sound_player.stream = load("res://Assets/previous project assest/sounds/dash.mp3")
+	add_child(explosion_sound_player)
+	explosion_sound_player.stream = load("res://Assets/previous project assest/sounds/explosion.wav")
 	
 
 	
@@ -186,7 +190,13 @@ func start_invincibility():
 	visible = true
 
 
+
 func die():
+	explosion_sound_player.play() # Play explosion sound immediately
+	set_physics_process(false) # Stop player movement/gravity
+	is_invincible = true # Prevent further damage calls
+
+	# Play death animation
 	anim_died.visible = true
 	anim_died.play("death")
 	anim_idle.visible = false
@@ -194,24 +204,13 @@ func die():
 	anim_jump.visible = false
 	anim_dash.visible = false
 
-	await get_tree().create_timer(1.0).timeout
+	# Wait briefly for sound/animation
+	await get_tree().create_timer(1.5).timeout # Increased delay slightly
 
-	# print("DEBUG: Player died at position: ", global_position) # Debug print removed
-	if spawn_point:
-		# print("DEBUG: Attempting to respawn at: ", spawn_point.global_position) # Debug print removed
-		global_position = spawn_point.global_position
-		# print("DEBUG: Player position AFTER respawn attempt: ", global_position) # Debug print removed
-	else:
-		# print("DEBUG: Warning: spawn_point missing in die()!") # Debug print removed
-		push_error("Spawn point reference missing when trying to respawn!") # Keep error for clarity
+	# Signal GameManager to handle game over sequence
+	GameManager.handle_game_over()
 
-	hp = max_hp
-	GameManager.update_hp(hp)
-	boost = max_boost
-	GameManager.update_boost(boost)
-	is_invincible = false
-	switch_to_idle()
-
+	# Player node might be freed by scene reload, no need to reset state here
 
 
 # ========================
