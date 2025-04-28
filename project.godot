@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 GameManager="*res://Scripts/game_manager.gd"
 Music="*res://Scenes/music.tscn"
 
+[global_group]
+
+Player=""
+
 [input]
 
 dash={

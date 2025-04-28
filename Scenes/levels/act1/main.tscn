@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=4 uid="uid://bqgdi5glysyvf"]
+[gd_scene load_steps=63 format=4 uid="uid://bqgdi5glysyvf"]
 
 [ext_resource type="Texture2D" uid="uid://bc2hhlp4knb43" path="res://Assets/Tileset/inside_the_tubes_tileset.png" id="1_cfhd0"]
 [ext_resource type="Texture2D" uid="uid://c6ifi42l00bwm" path="res://Assets/previous project assest/world_tileset.png" id="2_uyeul"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://cvkooxwemviwn" path="res://Scenes/entities/collectibles/coin.tscn" id="20_10u8i"]
 [ext_resource type="PackedScene" uid="uid://bao15eixp6stq" path="res://Scenes/entities/enemies/enemy_slime_green.tscn" id="22_wnj4s"]
 [ext_resource type="PackedScene" uid="uid://wwcxnqs6go44" path="res://Scenes/entities/enemies/enemy_slime_purple.tscn" id="24_15xac"]
+[ext_resource type="Script" uid="uid://v2gqvjy1xk2v" path="res://Scripts/exit_point.gd" id="28_05wo0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rypvw"]
 texture = ExtResource("3_spi3w")
@@ -3127,11 +3128,17 @@ texture = ExtResource("3_rypvw")
 38:6/0 = 0
 39:6/0 = 0
 41:6/0 = 0
+41:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 42:6/0 = 0
+42:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 43:6/0 = 0
+43:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 44:6/0 = 0
+44:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 45:6/0 = 0
+45:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 46:6/0 = 0
+46:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:7/0 = 0
 9:7/0 = 0
 10:7/0 = 0
@@ -3153,11 +3160,17 @@ texture = ExtResource("3_rypvw")
 38:7/0 = 0
 39:7/0 = 0
 41:7/0 = 0
+41:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 42:7/0 = 0
+42:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 43:7/0 = 0
+43:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 44:7/0 = 0
+44:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 45:7/0 = 0
+45:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 46:7/0 = 0
+46:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:8/0 = 0
 9:8/0 = 0
 10:8/0 = 0
@@ -3174,7 +3187,9 @@ texture = ExtResource("3_rypvw")
 34:8/0 = 0
 35:8/0 = 0
 41:8/0 = 0
+41:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 42:8/0 = 0
+42:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 8:9/0 = 0
 9:9/0 = 0
 10:9/0 = 0
@@ -3192,7 +3207,9 @@ texture = ExtResource("3_rypvw")
 34:9/0 = 0
 35:9/0 = 0
 41:9/0 = 0
+41:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 42:9/0 = 0
+42:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 12:10/0 = 0
 13:10/0 = 0
 14:10/0 = 0
@@ -3663,6 +3680,21 @@ _data = {
 &"platform_move": SubResource("Animation_wnj4s")
 }
 
+[sub_resource type="Animation" id="Animation_olitd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-170, -171)]
+}
+
 [sub_resource type="Animation" id="Animation_4lb3y"]
 resource_name = "orange platform 2"
 length = 2.5
@@ -3678,21 +3710,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-170, -171), Vector2(-95, -171)]
-}
-
-[sub_resource type="Animation" id="Animation_olitd"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-170, -171)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_05wo0"]
@@ -3740,6 +3757,9 @@ animations = [{
 "name": &"clock",
 "speed": 5.0
 }]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olitd"]
+size = Vector2(70, 40)
 
 [node name="act1" type="Node2D"]
 
@@ -3983,8 +4003,15 @@ scale = Vector2(2, 2)
 
 [node name="Checkpoints" type="Node2D" parent="."]
 
-[node name="ExitPoint" type="Node2D" parent="."]
-position = Vector2(3, 1)
+[node name="ExitPoint" type="Area2D" parent="."]
+position = Vector2(302, -176)
+collision_layer = 3
+collision_mask = 2
+script = ExtResource("28_05wo0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPoint"]
+position = Vector2(45, -3)
+shape = SubResource("RectangleShape2D_olitd")
 
 [node name="Labels" type="Node2D" parent="."]
 
@@ -4012,3 +4039,5 @@ offset_top = -213.0
 offset_right = 391.0
 offset_bottom = -164.0
 text = "Exit"
+
+[connection signal="body_entered" from="ExitPoint" to="ExitPoint" method="_on_body_entered"]

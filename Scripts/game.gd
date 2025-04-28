@@ -3,6 +3,10 @@ extends Node2D
 var current_act = 1
 var player_scene = preload("res://scenes/entities/player/player.tscn")
 var player_instance = null
+
+var end_screen_scene = preload("res://Scenes/ui/EndScreen.tscn")
+var end_screen_instance = null
+
 #var ui_scene = preload("res://scenes/ui/hud.tscn")
 #var ui_instance = null
 
@@ -30,6 +34,11 @@ func _ready():
 	# Create UI
 	#ui_instance = ui_scene.instantiate()
 	#add_child(ui_instance)
+
+	# Instance the end screen but keep it hidden initially
+	end_screen_instance = end_screen_scene.instantiate()
+	add_child(end_screen_instance)
+	# end_screen_instance.hide() # It should hide itself in its own _ready()
 	
 	# Reset to Act 1 on ready (ensures fresh start after scene reload)
 	current_act = 1
@@ -55,10 +64,30 @@ func load_act(act_number):
 	else:
 		# Default position if no spawn point is defined
 		player_instance.position = Vector2(100, 100)
+
+	# Find the ExitPoint in the newly loaded act and connect its signal
+	var exit_point = act.find_child("ExitPoint", true, false) # Recursive search
+	if exit_point:
+		# Check if already connected to prevent duplicate connections on reload?
+		# For simplicity, assume it's not connected yet or disconnect first if needed.
+		if not exit_point.exit_reached.is_connected(_on_exit_reached):
+			exit_point.exit_reached.connect(_on_exit_reached)
+			print("[game.gd] Connected exit_reached signal for act ", act_number) # DEBUG
+		else:
+			print("[game.gd] exit_reached signal already connected for act ", act_number) # DEBUG
+	else:
+		push_warning("[game.gd] ExitPoint node not found in act: " + act_path)
 	
 	# Update UI with act information
 	#ui_instance.update_act_display(current_act)
 	
+func _on_exit_reached(total_score, player_rank):
+	print("[game.gd] Exit reached! Score: ", total_score, " Rank: ", player_rank) # DEBUG
+	if end_screen_instance:
+		end_screen_instance.show_end(total_score, player_rank)
+	else:
+		push_error("[game.gd] End screen instance is null, cannot show end screen!")
+
 func advance_to_next_act():
 	current_act += 1
 	if current_act <= 3:  # Assuming 3 acts total

@@ -332,7 +332,7 @@ animations = [{
 
 [sub_resource type="Gradient" id="Gradient_6b3hu"]
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 20
 collision_layer = 2
 script = ExtResource("1_cvnsp")
@@ -342,7 +342,6 @@ zoom = Vector2(3.5, 3.5)
 position_smoothing_enabled = true
 
 [node name="playerIdle" type="AnimatedSprite2D" parent="."]
-visible = false
 z_index = 20
 position = Vector2(0, -9)
 scale = Vector2(0.5625, 0.714844)
@@ -351,12 +350,10 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="collisionShapeIdle" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_fkybt")
 
 [node name="playerRun" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(0, -2)
 scale = Vector2(0.65625, 0.710938)
 sprite_frames = SubResource("SpriteFrames_xqqc7")
@@ -364,11 +361,9 @@ animation = &"running"
 autoplay = "running"
 
 [node name="collisionShapeRun" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_6b3hu")
 
 [node name="playerJump" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(1.19209e-07, -7)
 scale = Vector2(0.570313, 0.636719)
 sprite_frames = SubResource("SpriteFrames_l3rqm")
@@ -376,7 +371,6 @@ animation = &"jump"
 frame_progress = 0.567134
 
 [node name="collisionShapeJump" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_7yyei")
 
 [node name="playerDash" type="AnimatedSprite2D" parent="."]
