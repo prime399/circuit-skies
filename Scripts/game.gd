@@ -18,13 +18,14 @@ func _ready():
 	else:
 		push_warning("[game.gd] Scene does not have a file path, cannot register for restart.") # DEBUG
 		
-	# Explicitly hide the main menu on ready (in case it persists after reload)
-	var main_menu_node = find_child("MainMenu", false, false) # Adjust "MainMenu" if node name is different
-	if main_menu_node:
-		print("[game.gd] Hiding MainMenu node found.") # DEBUG
-		main_menu_node.hide()
-	else:
-		print("[game.gd] MainMenu node not found to hide.") # DEBUG
+	# Don't explicitly hide the main menu here. Let it be visible by default.
+	# The main_menu.gd script will hide it when the start button is pressed.
+	# var main_menu_node = find_child("MainMenu", false, false) # Adjust "MainMenu" if node name is different
+	# if main_menu_node:
+	# 	print("[game.gd] Hiding MainMenu node found.") # DEBUG
+	# 	main_menu_node.hide()
+	# else:
+	# 	print("[game.gd] MainMenu node not found to hide.") # DEBUG
 		
 	# Create persistent player
 	player_instance = player_scene.instantiate()
