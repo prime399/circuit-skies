@@ -1,7 +1,7 @@
 extends Node2D
 
 var current_act = 1
-var player_scene = preload("res://scenes/entities/player/player.tscn")
+var player_scene = preload("res://Scenes/entities/player/player.tscn")
 var player_instance = null
 
 var end_screen_scene = preload("res://Scenes/ui/EndScreen.tscn")
@@ -54,7 +54,7 @@ func load_act(act_number):
 			child.queue_free()
 	
 	# Load new act
-	var act_path = "res://scenes/levels/act" + str(act_number) + "/main.tscn"
+	var act_path = "res://Scenes/levels/act" + str(act_number) + "/main.tscn"
 	var act = load(act_path).instantiate()
 	add_child(act)
 	
