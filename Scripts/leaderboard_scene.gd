@@ -40,3 +40,13 @@ func _on_leaderboard_button_pressed() -> void:
 
 func _on_close_pressed() -> void:
 	$LeaderboardUI.hide()
+
+
+
+func _on_close_scene_button_pressed() -> void:
+	var return_path = GameManager.previous_scene_path
+	if not return_path.is_empty():
+		get_tree().change_scene_to_file(return_path)
+	else:
+		# Fallback if no previous path is stored (e.g., go to main menu/game scene)
+		get_tree().change_scene_to_file("res://Scenes/game.tscn")

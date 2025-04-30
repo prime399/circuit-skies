@@ -8,6 +8,7 @@ const GAME_OVER_OVERLAY_PATH = "res://Scenes/ui/GameOverOverlay.tscn"
 var game_over_overlay_scene = null # To store the loaded scene
 var current_level_path: String = "" # Store the path of the currently loaded level
 var is_reloading: bool = false # Flag to indicate if a scene reload is in progress
+var previous_scene_path: String = "" # Store path to return to from leaderboard
 
 signal hp_changed(new_hp)
 signal boost_changed(new_boost)

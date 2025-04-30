@@ -5,7 +5,7 @@ var player_scene = preload("res://Scenes/entities/player/player.tscn")
 var player_instance = null
 
 var end_screen_scene = preload("res://Scenes/ui/EndScreen.tscn")
-var end_screen_instance = null
+# var end_screen_instance = null # Remove instance variable
 
 #var ui_scene = preload("res://scenes/ui/hud.tscn")
 #var ui_instance = null
@@ -36,10 +36,10 @@ func _ready():
 	#ui_instance = ui_scene.instantiate()
 	#add_child(ui_instance)
 
-	# Instance the end screen but keep it hidden initially
-	end_screen_instance = end_screen_scene.instantiate()
-	add_child(end_screen_instance)
-	# end_screen_instance.hide() # It should hide itself in its own _ready()
+	# # Instance the end screen but keep it hidden initially - MOVED TO _on_exit_reached
+	# end_screen_instance = end_screen_scene.instantiate()
+	# add_child(end_screen_instance)
+	# # end_screen_instance.hide() # It should hide itself in its own _ready()
 	
 	# Reset to Act 1 on ready (ensures fresh start after scene reload)
 	current_act = 1
@@ -84,11 +84,13 @@ func load_act(act_number):
 	
 func _on_exit_reached(total_score, player_rank):
 	print("[game.gd] Exit reached! Score: ", total_score, " Rank: ", player_rank) # DEBUG
+	# Instantiate and add the end screen to the root tree when exit is reached
+	var end_screen_instance = end_screen_scene.instantiate()
 	if end_screen_instance:
-		end_screen_instance.show_end(total_score, player_rank)
+		get_tree().root.add_child(end_screen_instance) # Add to root, like GameOverOverlay
+		end_screen_instance.show_end(total_score)
 	else:
-		push_error("[game.gd] End screen instance is null, cannot show end screen!")
-
+		push_error("[game.gd] Failed to instantiate EndScreen scene!")
 func advance_to_next_act():
 	current_act += 1
 	if current_act <= 3:  # Assuming 3 acts total

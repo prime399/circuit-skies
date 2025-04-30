@@ -1,31 +1,23 @@
-[gd_scene load_steps=11 format=3 uid="uid://e83skcgv5b7o"]
+[gd_scene load_steps=7 format=3 uid="uid://e83skcgv5b7o"]
 
 [ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="1_byi74"]
 [ext_resource type="Script" uid="uid://dwyf54uef035" path="res://Scripts/end_screen.gd" id="1_io8vi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_io8vi"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e6myc"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jx4p"]
-bg_color = Color(0.586149, 0.620417, 0.475217, 1)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_size = 10
+[sub_resource type="Theme" id="Theme_4jx4p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dyn1p"]
+bg_color = Color(0.672412, 0.688306, 0.576882, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rceu3"]
+[sub_resource type="Theme" id="Theme_io8vi"]
+default_font = ExtResource("1_byi74")
+default_font_size = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfkui"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cavnr"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ep1xj"]
+[sub_resource type="Theme" id="Theme_e6myc"]
+default_font = ExtResource("1_byi74")
+default_font_size = 30
 
 [node name="EndScreen" type="CanvasLayer"]
+process_mode = 2
 script = ExtResource("1_io8vi")
 
 [node name="Panel" type="Panel" parent="."]
@@ -34,6 +26,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_4jx4p")
+theme_override_styles/panel = SubResource("StyleBoxFlat_dyn1p")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
@@ -48,44 +42,25 @@ offset_right = 95.5
 offset_bottom = 45.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 40
 alignment = 1
 
-[node name="RestartButton" type="Button" parent="Panel/VBoxContainer"]
+[node name="MainMenuButton" type="Button" parent="Panel/VBoxContainer"]
+process_mode = 2
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("1_byi74")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/focus = SubResource("StyleBoxFlat_io8vi")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_e6myc")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_4jx4p")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_dyn1p")
-theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_rceu3")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_qfkui")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cavnr")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ep1xj")
-text = "Restart
-"
+theme = SubResource("Theme_io8vi")
+text = "Main Menu"
+alignment = 0
 
-[node name="LeaderBoard" type="Button" parent="Panel/VBoxContainer"]
+[node name="LeaderBoardButton" type="Button" parent="Panel/VBoxContainer"]
+process_mode = 2
 layout_mode = 2
-size_flags_horizontal = 0
-theme_override_fonts/font = ExtResource("1_byi74")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/disabled = SubResource("StyleBoxFlat_4jx4p")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_qfkui")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cavnr")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ep1xj")
+theme = SubResource("Theme_e6myc")
 text = "Leader Board"
+alignment = 0
 
 [node name="ScoreLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_byi74")
 theme_override_font_sizes/font_size = 30
 text = "Score: 0"
-
-[node name="RankLabel" type="Label" parent="Panel/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_byi74")
-theme_override_font_sizes/font_size = 30
-text = "Rank: -\""

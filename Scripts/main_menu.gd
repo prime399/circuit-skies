@@ -61,4 +61,6 @@ func _on_start_button_pressed():
 func _on_leader_board_pressed():
 	tap_sound_player.play() # Play tap sound
 	print("Leaderboard button pressed. Changing scene.")
+	# Store the current scene path before changing
+	GameManager.previous_scene_path = get_tree().current_scene.scene_file_path
 	get_tree().change_scene_to_file("res://Scenes/ui/leaderboard_scene.tscn")
