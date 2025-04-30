@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 GameManager="*res://Scripts/game_manager.gd"
 Music="*res://Scenes/music.tscn"
+Leaderboards="*res://addons/quiver_leaderboards/leaderboards.tscn"
+PlayerAccounts="*res://addons/quiver_player_accounts/player_accounts.tscn"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/quiver_leaderboards/plugin.cfg", "res://addons/quiver_player_accounts/plugin.cfg")
 
 [global_group]
 
@@ -32,8 +38,13 @@ dash={
 ]
 }
 
+[quiver]
+
+general/auth_token="Y5psMvImFPot1bes6g8rhGGvwCxhxztOtB7OhMHJ"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=3
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

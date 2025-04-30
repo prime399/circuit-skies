@@ -1,6 +1,7 @@
 extends Node
 
 var score = 0
+var player_name: String = ""
 
 # Path to the game over overlay scene
 const GAME_OVER_OVERLAY_PATH = "res://Scenes/ui/GameOverOverlay.tscn"

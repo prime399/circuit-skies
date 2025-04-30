@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbemd0mwhsdl6"]
+
+[ext_resource type="Script" uid="uid://cmxuu2fvlikn5" path="res://Scripts/leaderboard_scene.gd" id="1_4tlva"]
+[ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="1_wnhon"]
+[ext_resource type="PackedScene" uid="uid://dgygkbtm0burn" path="res://addons/quiver_leaderboards/leaderboard_ui.tscn" id="2_wnhon"]
+
+[sub_resource type="Theme" id="Theme_ynpfa"]
+default_font = ExtResource("1_wnhon")
+
+[sub_resource type="Theme" id="Theme_p5fgu"]
+default_font = ExtResource("1_wnhon")
+
+[node name="leaderboard_scene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 23.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ynpfa")
+script = ExtResource("1_4tlva")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -135.5
+offset_top = -21.5
+offset_right = 135.5
+offset_bottom = 21.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+keep_editing_on_text_submit = true
+
+[node name="score_button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Score"
+
+[node name="submit_button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Submit"
+
+[node name="leaderboard_button" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.458333
+anchor_top = 0.662037
+anchor_right = 0.552083
+anchor_bottom = 0.709877
+text = "Leaderboard
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="LeaderboardUI" parent="." instance=ExtResource("2_wnhon")]
+layout_mode = 1
+offset_left = 168.0
+offset_top = 73.0
+offset_right = -177.0
+offset_bottom = -74.0
+theme = SubResource("Theme_p5fgu")
+leaderboard_id = "circuit-skies-top_players-e6vE"
+
+[node name="Close" type="Button" parent="LeaderboardUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0217014
+anchor_top = 0.0324074
+anchor_right = 0.0651042
+anchor_bottom = 0.0802469
+text = "Close"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="text_submitted" from="HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="HBoxContainer/score_button" to="." method="_on_score_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/submit_button" to="." method="_on_submit_button_pressed"]
+[connection signal="pressed" from="leaderboard_button" to="." method="_on_leaderboard_button_pressed"]
+[connection signal="pressed" from="LeaderboardUI/Close" to="." method="_on_close_pressed"]

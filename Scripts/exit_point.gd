@@ -11,7 +11,7 @@ func _on_body_entered(body):
 	if body.is_in_group("player"):
 		print("[ExitPoint] Player body owner entered!") # DEBUG
 		# get the current score and rank (you’ll plug in real logic later)
-		var total_score = GameManager.score  # assume you track it there
+		var total_score = GameManager.score  
 		var player_rank  = "-"              # placeholder
 		emit_signal("exit_reached", total_score, player_rank)
 		# optionally disable it so it only fires once:
