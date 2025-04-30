@@ -77,7 +77,9 @@ func refresh_scores():
 	else:
 		var row: TreeItem = score_list.create_item(root)
 		if score_data["error"]:
+			# Print more detailed error info if available
 			row.set_text(0, "There was an error fetching scores.")
+			printerr("[Quiver Leaderboards] Error fetching scores: ", score_data)
 		else:
 			row.set_text(0, "No scores were found")
 

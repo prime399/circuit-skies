@@ -3764,7 +3764,7 @@ size = Vector2(70, 40)
 [node name="act1" type="Node2D"]
 
 [node name="PlayerSpawnPoint" type="Marker2D" parent="."]
-position = Vector2(124, -269)
+position = Vector2(-246, 163)
 
 [node name="Backgrounds" type="Node2D" parent="."]
 position = Vector2(-180, 48)

@@ -62,16 +62,12 @@ text = "Leaderboard
 metadata/_edit_use_anchors_ = true
 
 [node name="LeaderboardUI" parent="." instance=ExtResource("2_wnhon")]
-visible = false
 layout_mode = 1
-offset_left = 168.0
-offset_top = 73.0
-offset_right = -177.0
-offset_bottom = -74.0
 theme = SubResource("Theme_p5fgu")
 leaderboard_id = "circuit-skies-top_players-e6vE"
 
 [node name="Close" type="Button" parent="LeaderboardUI"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0217014

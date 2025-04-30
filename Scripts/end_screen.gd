@@ -2,10 +2,12 @@ extends CanvasLayer
 
 @onready var score_lbl  = $Panel/VBoxContainer/ScoreLabel
 @onready var rank_lbl   = $Panel/VBoxContainer/RankLabel
-# Remove Restart Button reference
-# @onready var restart_btn= $Panel/VBoxContainer/RestartButton
 @onready var leader_board_btn = $Panel/VBoxContainer/LeaderBoardButton # Add Leader Board Button reference
 @onready var main_menu_btn = $Panel/VBoxContainer/MainMenuButton     # Add Main Menu Button reference
+@onready var line_edit: LineEdit = $Panel/HBoxContainer/LineEdit
+
+var score = GameManager.score * 5
+var player_name:String
 
 func _ready():
 	visible = false
@@ -22,13 +24,6 @@ func show_end(total_score: int) -> void:
 	# Give focus to one of the buttons (optional, good for UI)
 	leader_board_btn.grab_focus()
 
-# Remove Restart Button handler
-# func _on_restart_pressed() -> void:
-# 	# Remove the overlay itself
-# 	get_tree().paused = false # Unpause the game first!
-# 	queue_free()
-# 	# Tell GameManager to restart the game (which changes the scene)
-# 	GameManager.call_deferred("restart_game") # Defer the call
 
 # Handle Leader Board button press
 func _on_leader_board_pressed() -> void:
@@ -44,3 +39,21 @@ func _on_main_menu_pressed() -> void:
 	queue_free() # Remove this screen
 	# Reload the main game scene which should show the main menu
 	get_tree().change_scene_to_file("res://Scenes/game.tscn")
+	
+
+
+
+func _on_line_edit_text_submitted(new_text: String) -> void:
+	player_name = new_text
+	GameManager.player_name = player_name
+	print(player_name)
+	
+
+
+
+func _on_submit_button_pressed() -> void:
+	player_name = line_edit.text # Get current text from LineEdit
+	GameManager.player_name = player_name # Update GameManager too
+	await Leaderboards.post_guest_score("circuit-skies-top_players-e6vE", score , player_name)
+	line_edit.clear() # Clear the input field
+	get_tree().reload_current_scene()

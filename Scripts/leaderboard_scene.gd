@@ -15,10 +15,10 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 
 
 
-func _on_score_button_pressed() -> void:
-	GameManager.score += 5
-	score = GameManager.score
-	print(score)
+#func _on_score_button_pressed() -> void:
+	#GameManager.score += 5
+	#score = GameManager.score
+	#print(score)
 
 
 

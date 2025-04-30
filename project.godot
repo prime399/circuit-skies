@@ -38,6 +38,10 @@ dash={
 ]
 }
 
+[quiver]
+
+general/auth_token="Y5psMvImFPot1bes6g8rhGGvwCxhxztOtB7OhMHJ"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=3

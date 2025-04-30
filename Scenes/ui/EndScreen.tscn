@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://e83skcgv5b7o"]
+[gd_scene load_steps=19 format=3 uid="uid://e83skcgv5b7o"]
 
 [ext_resource type="FontFile" uid="uid://uktnn00c0smu" path="res://Assets/previous project assest/fonts/PixelOperator8.ttf" id="1_byi74"]
 [ext_resource type="Script" uid="uid://dwyf54uef035" path="res://Scripts/end_screen.gd" id="1_io8vi"]
+[ext_resource type="Texture2D" uid="uid://br8w7ip6ma37r" path="res://Assets/previous project assest/slime_green.png" id="3_4jx4p"]
+[ext_resource type="Texture2D" uid="uid://dii3imso1ee1p" path="res://Assets/previous project assest/slime_purple.png" id="4_dyn1p"]
 
 [sub_resource type="Theme" id="Theme_4jx4p"]
 
@@ -15,6 +17,78 @@ default_font_size = 30
 [sub_resource type="Theme" id="Theme_e6myc"]
 default_font = ExtResource("1_byi74")
 default_font_size = 30
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rceu3"]
+atlas = ExtResource("3_4jx4p")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfkui"]
+atlas = ExtResource("3_4jx4p")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cavnr"]
+atlas = ExtResource("3_4jx4p")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ep1xj"]
+atlas = ExtResource("3_4jx4p")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xvovx"]
+animations = [{
+"frames": [{
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_rceu3")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_qfkui")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_cavnr")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_ep1xj")
+}],
+"loop": true,
+"name": &"green slime idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_si3oa"]
+atlas = ExtResource("4_dyn1p")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_or00p"]
+atlas = ExtResource("4_dyn1p")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_57c3c"]
+atlas = ExtResource("4_dyn1p")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv856"]
+atlas = ExtResource("4_dyn1p")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gw5yk"]
+animations = [{
+"frames": [{
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_si3oa")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_or00p")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_57c3c")
+}, {
+"duration": 1.3,
+"texture": SubResource("AtlasTexture_cv856")
+}],
+"loop": true,
+"name": &"idle green slime",
+"speed": 3.0
+}]
 
 [node name="EndScreen" type="CanvasLayer"]
 process_mode = 2
@@ -31,19 +105,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_dyn1p")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -95.5
-offset_top = -45.0
-offset_right = 95.5
-offset_bottom = 45.0
+anchors_preset = -1
+anchor_left = 0.368056
+anchor_top = 0.432099
+anchor_right = 0.638889
+anchor_bottom = 0.723765
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
 alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="MainMenuButton" type="Button" parent="Panel/VBoxContainer"]
 process_mode = 2
@@ -64,3 +135,50 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("1_byi74")
 theme_override_font_sizes/font_size = 30
 text = "Score: 0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.199219
+anchor_top = 0.253086
+anchor_right = 0.801649
+anchor_bottom = 0.311728
+offset_left = 158.5
+offset_right = -158.5
+grow_horizontal = 2
+theme_override_constants/separation = 40
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer"]
+layout_mode = 2
+text = "Name:"
+
+[node name="LineEdit" type="LineEdit" parent="Panel/HBoxContainer"]
+process_mode = 2
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="SubmitButton" type="Button" parent="Panel/HBoxContainer"]
+process_mode = 2
+layout_mode = 2
+text = "Submit"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Panel"]
+position = Vector2(1035, 549)
+rotation = -3.14159
+scale = Vector2(7.33166, -8.13863)
+sprite_frames = SubResource("SpriteFrames_xvovx")
+animation = &"green slime idle"
+autoplay = "green slime idle"
+frame_progress = 1.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Panel"]
+position = Vector2(123.5, 516)
+scale = Vector2(8.04167, 10.0833)
+sprite_frames = SubResource("SpriteFrames_gw5yk")
+animation = &"idle green slime"
+autoplay = "idle green slime"
+
+[connection signal="text_submitted" from="Panel/HBoxContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="Panel/HBoxContainer/SubmitButton" to="." method="_on_submit_button_pressed"]
