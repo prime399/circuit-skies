@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://er4lhlgt1us8"]
+
+[ext_resource type="Script" uid="uid://bvvut34kyprhh" path="res://Scripts/tutorial_popup.gd" id="1_er2x6"]
+
+[node name="TutorialPopup" type="CanvasLayer"]
+script = ExtResource("1_er2x6")
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.490196)
+custom_minimum_size = Vector2(400, 150)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="tutorial_text" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 33.0
+offset_right = 280.0
+offset_bottom = 102.0
+text = "testing"
+
+[node name="ButtonNextButton" type="Button" parent="Panel"]
+process_mode = 2
+layout_mode = 0
+offset_left = 312.0
+offset_top = 218.0
+offset_right = 384.0
+offset_bottom = 246.0
+text = "Next"
+
+[connection signal="pressed" from="Panel/ButtonNextButton" to="." method="_on_button_next_button_pressed"]

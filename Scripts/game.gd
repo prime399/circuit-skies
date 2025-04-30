@@ -5,12 +5,18 @@ var player_scene = preload("res://Scenes/entities/player/player.tscn")
 var player_instance = null
 
 var end_screen_scene = preload("res://Scenes/ui/EndScreen.tscn")
-# var end_screen_instance = null # Remove instance variable
+var tutorial_popup_scene = preload("res://Scenes/tutorial_popup.tscn") # Preload tutorial popup
 
-#var ui_scene = preload("res://scenes/ui/hud.tscn")
-#var ui_instance = null
+var tutorial_showing = false
+var tutorial_shown_this_session = false # Track if tutorial has been shown in this session
+
+# Config file path for saving tutorial state
+const SAVE_PATH = "user://game_state.cfg"
 
 func _ready():
+	# Load persistent data
+	load_game_state()
+	
 	# Register this scene's path with the GameManager for restarts
 	print("[game.gd] _ready: Scene path is: '", self.scene_file_path, "'") # DEBUG
 	if self.scene_file_path and not self.scene_file_path.is_empty():
@@ -18,34 +24,34 @@ func _ready():
 	else:
 		push_warning("[game.gd] Scene does not have a file path, cannot register for restart.") # DEBUG
 		
-	# Don't explicitly hide the main menu here. Let it be visible by default.
-	# The main_menu.gd script will hide it when the start button is pressed.
-	# var main_menu_node = find_child("MainMenu", false, false) # Adjust "MainMenu" if node name is different
-	# if main_menu_node:
-	# 	print("[game.gd] Hiding MainMenu node found.") # DEBUG
-	# 	main_menu_node.hide()
-	# else:
-	# 	print("[game.gd] MainMenu node not found to hide.") # DEBUG
+
 		
 	# Create persistent player
 	player_instance = player_scene.instantiate()
 	player_instance.add_to_group("player")
 	add_child(player_instance)
-	
-	# Create UI
-	#ui_instance = ui_scene.instantiate()
-	#add_child(ui_instance)
-
-	# # Instance the end screen but keep it hidden initially - MOVED TO _on_exit_reached
-	# end_screen_instance = end_screen_scene.instantiate()
-	# add_child(end_screen_instance)
-	# # end_screen_instance.hide() # It should hide itself in its own _ready()
-	
-	# Reset to Act 1 on ready (ensures fresh start after scene reload)
 	current_act = 1
 	
 	# Load first act
 	load_act(current_act)
+
+# Save tutorial shown state
+func save_game_state():
+	var config = ConfigFile.new()
+	config.set_value("tutorial", "shown", tutorial_shown_this_session)
+	config.save(SAVE_PATH)
+	print("[game.gd] Saved tutorial state: shown = ", tutorial_shown_this_session)
+
+# Load tutorial shown state
+func load_game_state():
+	var config = ConfigFile.new()
+	var err = config.load(SAVE_PATH)
+	if err == OK:
+		tutorial_shown_this_session = config.get_value("tutorial", "shown", false)
+		print("[game.gd] Loaded tutorial state: shown = ", tutorial_shown_this_session)
+	else:
+		tutorial_shown_this_session = false
+		print("[game.gd] No saved state found, tutorial will be shown")
 
 func load_act(act_number):
 	# Clear any existing act
@@ -81,6 +87,37 @@ func load_act(act_number):
 	
 	# Update UI with act information
 	#ui_instance.update_act_display(current_act)
+
+	# Show tutorial popup only for Act 1 and if it hasn't been shown yet this session
+	if act_number == 1 and not tutorial_showing and not tutorial_shown_this_session:
+		tutorial_showing = true
+		call_deferred("_show_tutorial")
+
+func _show_tutorial():
+	# Use call_deferred to ensure scene is fully loaded
+	print("[game.gd] Showing tutorial popup")
+	if ResourceLoader.exists("res://Scenes/tutorial_popup.tscn"):
+		var tutorial_popup_instance = tutorial_popup_scene.instantiate()
+		add_child(tutorial_popup_instance) # Add to the game scene itself
+		
+		# Create a callback to reset tutorial_showing when done and mark as shown for this session
+		var done_callback = func(): 
+			tutorial_showing = false
+			tutorial_shown_this_session = true
+			save_game_state() # Save that tutorial has been shown
+		
+		tutorial_popup_instance.start([
+			"[center]Welcome to [b]Circuit Skies[/b]![/center]",
+			"Use [b]← →[/b] to move.",
+			"Press [b]Space[/b] to jump.",
+			"Press [b]D[/b] to dash with [b]← →[/b] ",
+			"Collect coins to increase your score.",
+			"Avoid enemies as they will kill you.",
+			"[color=orange]Good luck, Navigation Officer![/color]"
+		], done_callback)
+	else:
+		push_error("[game.gd] Tutorial scene not found: res://Scenes/tutorial_popup.tscn")
+		tutorial_showing = false
 	
 func _on_exit_reached(total_score, player_rank):
 	print("[game.gd] Exit reached! Score: ", total_score, " Rank: ", player_rank) # DEBUG
