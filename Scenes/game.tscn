@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cnaelck51eoy6" path="res://Assets/sprites/coin.png" id="5_i6g32"]
 [ext_resource type="Texture2D" uid="uid://b04d75xtmg2tj" path="res://Assets/others/health bar asset.png" id="6_i6g32"]
 [ext_resource type="Script" uid="uid://dyv2hpth8i6j6" path="res://Scripts/main_menu.gd" id="7_v158k"]
-[ext_resource type="Texture2D" uid="uid://cei0v0y1oe546" path="res://Assets/Poster/poster for main menu_compressed.jpg" id="8_v158k"]
+[ext_resource type="Texture2D" uid="uid://di7jc00bcijp3" path="res://Assets/circuit skies poster_compressed.jpg" id="8_v158k"]
 
 [sub_resource type="Theme" id="Theme_1l0tm"]
 

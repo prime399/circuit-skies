@@ -108,9 +108,9 @@ func _show_tutorial():
 		
 		tutorial_popup_instance.start([
 			"[center]Welcome to [b]Circuit Skies[/b]![/center]",
-			"Use [b]← →[/b] to move.",
+			"Use [b]<- ->[/b] to move.",
 			"Press [b]Space[/b] to jump.",
-			"Press [b]D[/b] to dash with [b]← →[/b] ",
+			"Press [b]D[/b] to dash with [b]<- ->[/b] ",
 			"Collect coins to increase your score.",
 			"Avoid enemies as they will kill you.",
 			"[color=orange]Good luck, Navigation Officer![/color]"
